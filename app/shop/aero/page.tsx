@@ -13,7 +13,7 @@ import { CartItem } from "@/app/cart/page";
 const product = {
   id: 3,
   name: "Geco Aero Pac Bag",
-  price: "RM 99",
+  price: 99,
   href: "#",
   image: "L",
   breadcrumbs: [
@@ -89,7 +89,7 @@ export default function Aero() {
       const newCartItem: CartItem = {
         id: product.id,
         name: product.name,
-        price: parseFloat(product.price.replace("RM ", "")),
+        price: product.price,
         image: product.image,
         quantity: 1,
       };
@@ -155,7 +155,7 @@ export default function Aero() {
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight text-gray-900">
-                {product.price}
+                RM {product.price}
               </p>
 
               <div className="mt-6">

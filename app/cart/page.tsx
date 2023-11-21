@@ -17,15 +17,15 @@ export interface CartItem {
 export default function Cart() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const shipping = 7;
+  const calculateTotalPrice = () => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    setTotalPrice(total);
+  };
   useEffect(() => {
-    const calculateTotalPrice = () => {
-      let total = 0;
-      cartItems.forEach((item) => {
-        total += item.price * item.quantity;
-      });
-      setTotalPrice(total);
-    };
-
     const storedCartItems = JSON.parse(
       localStorage.getItem("cartItems") || "[]",
     ) as CartItem[];
@@ -38,12 +38,17 @@ export default function Cart() {
     const newCartItems = [...cartItems];
     newCartItems[index].quantity = newQuantity;
     setCartItems(newCartItems);
+    localStorage.setItem("cartItems", JSON.stringify(newCartItems));
+    calculateTotalPrice();
   };
 
   const handleRemoveItem = (index: number) => {
     const newCartItems = [...cartItems];
     newCartItems.splice(index, 1);
     setCartItems(newCartItems);
+    calculateTotalPrice();
+    localStorage.setItem("cartItems", JSON.stringify(newCartItems));
+    calculateTotalPrice();
   };
 
   return (
@@ -85,19 +90,20 @@ export default function Cart() {
                     <div className="flex items-center border-gray-100">
                       <span
                         className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
-                        onClick={() =>
-                          handleQuantityChange(index, item.quantity - 1)
-                        }
+                        onClick={() => {
+                          if (item.quantity > 1) {
+                            handleQuantityChange(index, item.quantity - 1);
+                          } else {
+                            handleRemoveItem(index);
+                          }
+                        }}
                       >
                         {" "}
                         -{" "}
                       </span>
-                      <input
-                        className="h-8 w-8 border bg-white text-center text-xs outline-none"
-                        type="number"
-                        value={item.quantity}
-                        min="1"
-                      />
+                      <p className="h-8 w-8 border bg-white flex justify-center items-center text-xs outline-none">
+                        {item.quantity}
+                      </p>
                       <span
                         onClick={() =>
                           handleQuantityChange(index, item.quantity + 1)
@@ -115,7 +121,7 @@ export default function Cart() {
                         onClick={() => handleRemoveItem(index)}
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        strokeWidth="1.5"
                         stroke="currentColor"
                         className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500"
                       >
@@ -138,14 +144,16 @@ export default function Cart() {
             </div>
             <div className="flex justify-between">
               <p className="text-gray-700">Shipping</p>
-              <p className="text-gray-700">RM {totalPrice * 0.07}</p>
+              <p className="text-gray-700">
+                RM {totalPrice != 0 ? shipping.toFixed(2) : 0}
+              </p>
             </div>
             <hr className="my-4" />
             <div className="flex justify-between">
               <p className="text-lg font-bold">Total</p>
               <div className="">
                 <p className="mb-1 text-lg font-bold">
-                  RM {totalPrice + totalPrice * 0.07}
+                  RM {(totalPrice + totalPrice != 0 ? shipping : 0).toFixed(2)}
                 </p>
                 <p className="text-sm text-gray-700">including VAT</p>
               </div>

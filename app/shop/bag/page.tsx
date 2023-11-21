@@ -12,7 +12,7 @@ import { CartItem } from "@/app/cart/page";
 const product = {
   id: 1,
   name: "Geco Dry Bag",
-  price: "RM 79",
+  price: 79,
   href: "#",
   image: "E",
   breadcrumbs: [
@@ -88,7 +88,7 @@ export default function Bag() {
       const newCartItem: CartItem = {
         id: product.id,
         name: product.name,
-        price: parseFloat(product.price.replace("RM ", "")),
+        price: product.price,
         image: product.image,
         quantity: 1,
       };
@@ -154,7 +154,7 @@ export default function Bag() {
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight text-gray-900">
-                {product.price}
+                RM {product.price}
               </p>
 
               <div className="mt-6">
