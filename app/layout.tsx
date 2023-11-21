@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 const voodoo = localFont({
   src: "assets/voodoo-sans.ttf",
@@ -28,7 +29,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${voodoo.variable} ${sans.variable} font-sans`}>
         <Header />
-        <main className="pt-24 px-8 lg:px-32 h-[100svh]">{children}</main>
+        <main className="pt-24 px-8 lg:px-32 h-[100svh]">
+          {children}
+          <Analytics />
+        </main>
         {/* <Footer /> */}
       </body>
     </html>

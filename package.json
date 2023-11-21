@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.0.18",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.5",
+    "@vercel/analytics": "^1.1.1",
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "flowbite-react": "^0.6.4",
